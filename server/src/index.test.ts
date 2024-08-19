@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "../app";
+import app from "./app";
 
 test('root path responds with "API is running on /api"', async () => {
   const res = await request(app).get("/");
