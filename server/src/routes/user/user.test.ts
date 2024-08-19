@@ -1,9 +1,58 @@
+import request from "supertest";
 import { prismaMock } from "../../../singleton";
 import {
   createUser,
   getSleepTotalsByDateRange,
   getUserByNameAndGender,
 } from "./user.service";
+import * as userService from "./user.service";
+import app from "../../app";
+
+test("POST /users must call getUsers methods", async () => {
+  const getUsersSpy = jest.spyOn(userService, "getUsers").mockImplementation();
+
+  await request(app).get("/api/users").send();
+
+  expect(getUsersSpy).toHaveBeenCalled();
+  getUsersSpy.mockRestore();
+});
+
+test("getUsers returns user data with total sleep records", async () => {
+  const mockUsers = [
+    { id: 1, name: "John", genderId: null, _count: { SleepRecord: 3 } },
+    { id: 2, name: "Jane", genderId: null, _count: { SleepRecord: 2 } },
+  ];
+  const findManySpy = jest
+    .spyOn(prismaMock.user, "findMany")
+    .mockResolvedValue(mockUsers);
+
+  const res = await userService.getUsers();
+
+  expect(res).toEqual([
+    {
+      id: 1,
+      name: "John",
+      entryCount: 3,
+    },
+    {
+      id: 2,
+      name: "Jane",
+      entryCount: 2,
+    },
+  ]);
+  expect(findManySpy).toHaveBeenCalledWith({
+    select: {
+      id: true,
+      name: true,
+      _count: {
+        select: { SleepRecord: true },
+      },
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
+});
 
 describe("getUserByNameAndGender", () => {
   let findFirstSpy: jest.SpyInstance;

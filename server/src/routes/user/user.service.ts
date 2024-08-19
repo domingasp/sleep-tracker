@@ -1,6 +1,25 @@
 import { Prisma } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 import prisma from "../../../prisma/prisma-client";
+import UserDto from "./interfaces/UserDto";
+import { userMapper } from "./user.mapper";
+
+export const getUsers = async (): Promise<UserDto[]> => {
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+      name: true,
+      _count: {
+        select: { SleepRecord: true },
+      },
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
+
+  return users.map(userMapper);
+};
 
 export const getUserByNameAndGender = async (
   name: string,
