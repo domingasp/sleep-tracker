@@ -6,3 +6,25 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Gender {
+  id   Int    @id @default(autoincrement())
+  name String
+  User User[]
+}
+
+model User {
+  id          Int           @id @default(autoincrement())
+  name        String
+  SleepRecord SleepRecord[]
+  gender      Gender?       @relation(fields: [genderId], references: [id], onDelete: Restrict)
+  genderId    Int?
+}
+
+model SleepRecord {
+  id         Int      @id @default(autoincrement())
+  hoursSlept Float
+  date       DateTime @db.Date
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int
+}

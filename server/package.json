@@ -6,6 +6,9 @@
     "start": "nodemon ./src/index.ts",
     "test": "jest"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "author": "",
   "license": "ISC",
   "description": "",
