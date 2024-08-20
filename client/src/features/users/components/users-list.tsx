@@ -7,7 +7,10 @@ import {
 import { useUsers } from "../api/get-users";
 import { User } from "../../../types/api";
 
-export const UsersList = () => {
+type UsersListProps = {
+  onClickRow: (value: User) => void;
+};
+export const UsersList = ({ onClickRow }: UsersListProps) => {
   const usersQuery = useUsers();
   const users = usersQuery.data;
 
@@ -24,9 +27,8 @@ export const UsersList = () => {
   const table = useMantineReactTable({
     columns,
     data: users ?? [],
-    getRowId: (row) => row.id,
     mantineTableBodyRowProps: ({ row }) => ({
-      onClick: () => console.log(row, "clicked"),
+      onClick: () => onClickRow(row.original),
       sx: { cursor: "pointer" },
     }),
     renderTopToolbarCustomActions: () => (
