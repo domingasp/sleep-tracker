@@ -31,7 +31,7 @@ Complete the following steps in your preferred terminal.
 
 1. Navigate to `./client`.
 2. Run `npm i` to install dependencies.
-3. Run `npm run start` to start the client.
+3. Run `npm run dev` to start the client.
 
 > [!NOTE]  
 > The client can be access from the browser at `http://localhost:5173`.
@@ -78,10 +78,19 @@ Complete the following steps in your preferred terminal.
 - `Zod` - request body validation.
 - `PostgreSQL` - data persistence.
 
+# Assumptions
+- There can be multiple users with the same name but different genders, e.g., Ryan may be a Man, Woman, or others.
+- When it comes to adding records if no gender is specified but the name exists, the first entry found is used.
+  - This can cause erronous behaviour, e.g. if 2 users named Ryan exist and an entry is make for Ryan without any gender selected the record could be associated to either user.
+  - Potential fixes include:
+    - Expose name + gender combinations to all users and use auto-complete/show message if unclear which user the record will associate to.
+    - Make the gender field mandatory.
+
 # Future Improvements/Features
 - Fully unit test all user journeys for the client.
 - Return all existing names on `Add Sleep` form and add auto-complete to the `name` field.
 - Custom data range for sleeping hours rather than the last 7 days.
+- User accounts.
 
 # Development Guide
 
