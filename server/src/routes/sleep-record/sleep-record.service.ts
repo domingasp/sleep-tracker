@@ -6,8 +6,8 @@ import {
   getUserByNameAndGender,
 } from "../user/user.service";
 import HttpException from "../../models/http-exception.model";
-import CreateSleepRecord from "./interfaces/CreateSleepRecord";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { CreateSleepRecord } from "../../validators/schema";
 
 const getGenderId = async (genderName: string | undefined) => {
   if (!genderName) return undefined;
@@ -34,7 +34,7 @@ const getOrCreateUser = async (
   } else {
     const totalLogged = await getSleepTotalsByDateRange(user.id, date);
     const totalHoursSlept =
-      totalLogged.length > 0 ? totalLogged[0]._sum.hoursSlept || 0 : 0;
+      totalLogged.length > 0 ? totalLogged[0].hoursSlept || 0 : 0;
     if (totalHoursSlept + hoursSlept > 24) {
       throw new HttpException(
         400,

@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { validateRequest } from "../../validators/validator-middleware";
-import { createSleepRecordValidator } from "../../validators/validators";
 import { createSleepRecord } from "./sleep-record.service";
+import { CreateSleepRecordSchema } from "../../validators/schema";
 
 const router = Router();
 
 router.post(
   "/sleep-records",
-  [validateRequest(createSleepRecordValidator)],
+  [validateRequest(CreateSleepRecordSchema)],
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const sleepRecord = await createSleepRecord(req.body);
