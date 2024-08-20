@@ -64,7 +64,7 @@ export const getSleepTotalsByDateRange = async (
 export const createUser = async (name: string, genderId?: number) => {
   return await prisma.user.create({
     data: {
-      name,
+      name: name.trim(),
       genderId: genderId,
     },
   });

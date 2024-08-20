@@ -12,12 +12,12 @@ test("landing route must display the app name, a button for adding sleep, and us
   render(<LandingRoute />);
 
   const titleElement = screen.getByTestId("content-layout-title");
-  expect(titleElement).toHaveTextContent("Add Sleep");
+  expect(titleElement).toHaveTextContent("Sleep Tracker");
 
   const trackSleepButtonElement = screen.getByTestId(
     "landing-route-add-sleep-button"
   );
-  expect(trackSleepButtonElement).toHaveTextContent("Track Sleep");
+  expect(trackSleepButtonElement).toHaveTextContent("Add Sleep");
 
   const tableHintElement = screen.getByTestId("users-list-table-hint");
   expect(tableHintElement).toHaveTextContent(
