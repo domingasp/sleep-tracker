@@ -16,7 +16,12 @@ export const createSleepRecordInputSchema = z.object({
     .min(1, {
       message: "Name must have at least 1 character",
     })
-    .max(100, { message: "Name must not be longer than 100 characters" }),
+    .max(100, { message: "Name must not be longer than 100 characters" })
+    .regex(
+      // TODO more robust full name regex
+      /^[a-z ,.'-]+$/i,
+      { message: "Letters and the following characters , . ' - only" }
+    ),
   gender: z.union([
     z
       .string({

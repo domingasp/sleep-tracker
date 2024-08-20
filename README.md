@@ -1,10 +1,17 @@
 # Sleep Tracker
 
+# Application Stack
+
 ## Client
 
 - `React` + `Typescript` - as the framework.
 - [`Mantine`](https://mantine.dev/) - component library.
+  - Plus additional packages from Mantine; Date
+- [`Mantine React Table`]() - table library.
 - [`Tanstack Query`](https://tanstack.com/query/latest) - fetching data from server.
+- `Zod` - request body validation.
+- `axios` - api request handling.
+- `react-hook-form` - form management.
 - `Jest` - for testing framework.
 
 ## Server
@@ -15,7 +22,9 @@
 - `Zod` - request body validation.
 - `PostgreSQL` - data persistence.
 
-### Prisma
+# Development Guide
+
+## Prisma
 
 Prisma is used as the ORM for the application. You'll need to be aware of the following commands - these will need to be executed anytime you change the models:
 

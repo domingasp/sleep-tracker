@@ -16,6 +16,7 @@ import {
   NumberInput,
   Select,
   Stack,
+  Text,
   TextInput,
   Title,
 } from "@mantine/core";
@@ -36,6 +37,7 @@ export function CreateSleepRecord() {
   const [responseErrorMessage, setResponseErrorMessage] = useState<
     string | undefined
   >(undefined);
+
   const navigate = useNavigate();
   const gendersQuery = useGenders();
   const genders = gendersQuery.data;
@@ -68,10 +70,10 @@ export function CreateSleepRecord() {
   // TODO generalise into a component for easy reuse
   const {
     control,
-    register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<CreateSleepRecordInput>({
+    mode: "onChange",
     defaultValues: {
       hoursSlept: 8,
       date: dayjs().add(-1, "days").toDate(),
@@ -85,7 +87,7 @@ export function CreateSleepRecord() {
 
   return (
     <Center>
-      <Card maw={500} w="100%">
+      <Card maw={600} w="100%">
         <form onSubmit={onSubmit}>
           <Stack>
             <Group px="sm" justify="space-between">
@@ -109,12 +111,18 @@ export function CreateSleepRecord() {
               )}
             </Collapse>
 
-            <Group w="100%" align="flex-end">
-              <TextInput
-                flex={1}
-                label="Name"
-                {...register("name")}
-                error={errors["name"]?.message}
+            <Group w="100%" align="flex-start">
+              <Controller
+                name="name"
+                control={control}
+                render={({ field }) => (
+                  <TextInput
+                    flex={1}
+                    label="Name"
+                    {...field}
+                    error={errors.name?.message}
+                  />
+                )}
               />
 
               <Controller
@@ -123,8 +131,16 @@ export function CreateSleepRecord() {
                 render={({ field }) => (
                   <Select
                     flex={1}
-                    label="Gender"
-                    description="Optional"
+                    label={
+                      <Group gap="xs">
+                        <Text size="sm" fw={500}>
+                          Gender
+                        </Text>
+                        <Text size="xs" c="dimmed" fs="italic">
+                          Optional
+                        </Text>
+                      </Group>
+                    }
                     {...field}
                     data={
                       genders?.map((gender) => ({
@@ -173,7 +189,9 @@ export function CreateSleepRecord() {
             leftSection={<IconDeviceFloppy />}
             type="submit"
             disabled={!isValid}
+            loading={createSleepRecordMutation.isPending}
             mt="xl"
+            w="100%"
           >
             Add
           </Button>
