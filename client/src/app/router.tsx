@@ -1,6 +1,7 @@
 import { QueryClient, useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { MainErrorFallback } from "../components/errors/main";
 
 const createAppRouter = (queryClient: QueryClient) =>
   createBrowserRouter([
@@ -10,6 +11,11 @@ const createAppRouter = (queryClient: QueryClient) =>
         const { LandingRoute } = await import("./routes/landing");
         return { Component: LandingRoute };
       },
+      loader: async () => {
+        const { usersLoader } = await import("./routes/landing");
+        return usersLoader(queryClient)();
+      },
+      errorElement: <MainErrorFallback />,
     },
     {
       path: "*",
