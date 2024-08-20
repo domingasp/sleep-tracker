@@ -1,5 +1,5 @@
 export type BaseEntity = {
-  id: string;
+  id: number;
 };
 
 export type Entity<T> = {
@@ -12,3 +12,5 @@ export type User = Entity<{
   name: string;
   entryCount: number;
 }>;
+
+export type SleepRecord = { date: string; hoursSlept: number };
