@@ -7,6 +7,7 @@ import {
 } from "./user.service";
 import * as userService from "./user.service";
 import app from "../../app";
+import dayjs from "dayjs";
 
 test("POST /users must call getUsers methods", async () => {
   const getUsersSpy = jest.spyOn(userService, "getUsers").mockImplementation();
@@ -15,6 +16,27 @@ test("POST /users must call getUsers methods", async () => {
 
   expect(getUsersSpy).toHaveBeenCalled();
   getUsersSpy.mockRestore();
+});
+
+test("GET /users/:userId/sleep-records must call getSleepTotalsByDateRange", async () => {
+  const userIdToFind = 1;
+  jest.useFakeTimers().setSystemTime(new Date("2024-08-18"));
+  const startDate = dayjs().add(-8, "days").toDate();
+  const endDate = dayjs().add(-1, "days").toDate();
+
+  const getSleepTotalsByDateRangeSpy = jest
+    .spyOn(userService, "getSleepTotalsByDateRange")
+    .mockImplementation();
+
+  await request(app).get(`/api/users/${userIdToFind}/recent-sleep-records`);
+  expect(getSleepTotalsByDateRangeSpy).toHaveBeenCalledWith(
+    userIdToFind,
+    startDate,
+    endDate
+  );
+
+  getSleepTotalsByDateRangeSpy.mockRestore();
+  jest.useRealTimers();
 });
 
 test("getUsers returns user data with total sleep records", async () => {
@@ -134,7 +156,16 @@ describe("getSleepTotalsByDateRange", () => {
       endDateToFind
     );
 
-    expect(res).toEqual(mockGroupedByData);
+    expect(res).toEqual([
+      {
+        hoursSlept: 7,
+        date: mockGroupedByData[0].date,
+      },
+      {
+        hoursSlept: 24,
+        date: mockGroupedByData[1].date,
+      },
+    ]);
     expect(groupBySpy).toHaveBeenCalledWith({
       by: ["date"],
       _sum: {
@@ -160,7 +191,12 @@ describe("getSleepTotalsByDateRange", () => {
 
     const res = await getSleepTotalsByDateRange(userIdToFind, startDateToFind);
 
-    expect(res).toEqual(mockGroupedByData);
+    expect(res).toEqual([
+      {
+        hoursSlept: 24,
+        date: mockGroupedByData[0].date,
+      },
+    ]);
     expect(groupBySpy).toHaveBeenCalledWith({
       by: ["date"],
       _sum: {

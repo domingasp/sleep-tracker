@@ -98,9 +98,7 @@ describe("createSleepRecord", () => {
       .mockResolvedValue(mockUser);
     jest
       .spyOn(userService, "getSleepTotalsByDateRange")
-      .mockResolvedValue([
-        { _sum: { hoursSlept: 24 }, date: new Date("2024-08-16") },
-      ]);
+      .mockResolvedValue([{ hoursSlept: 24, date: new Date("2024-08-16") }]);
 
     expect(
       sleepRecordService.createSleepRecord(createSleepRecordPayload)
@@ -116,9 +114,7 @@ describe("createSleepRecord", () => {
     jest.spyOn(userService, "getUserByNameAndGender").mockResolvedValue(null);
     jest
       .spyOn(userService, "getSleepTotalsByDateRange")
-      .mockResolvedValue([
-        { _sum: { hoursSlept: 2 }, date: new Date("2024-08-16") },
-      ]);
+      .mockResolvedValue([{ hoursSlept: 2, date: new Date("2024-08-16") }]);
     createSleepRecordSpy.mockResolvedValue({
       ...createSleepRecordPayload,
       date: new Date(createSleepRecordPayload.date),

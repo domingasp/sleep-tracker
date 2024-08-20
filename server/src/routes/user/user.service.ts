@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 import prisma from "../../../prisma/prisma-client";
 import UserDto from "./interfaces/UserDto";
-import { userMapper } from "./user.mapper";
+import { sleepRecordMapper, userMapper } from "./user.mapper";
 
 export const getUsers = async (): Promise<UserDto[]> => {
   const users = await prisma.user.findMany({
@@ -44,7 +44,7 @@ export const getSleepTotalsByDateRange = async (
   startDate: Date,
   endDate?: Date
 ) => {
-  return await prisma.sleepRecord.groupBy({
+  const sleepRecords = await prisma.sleepRecord.groupBy({
     by: ["date"],
     _sum: {
       hoursSlept: true,
@@ -57,6 +57,8 @@ export const getSleepTotalsByDateRange = async (
       },
     },
   });
+
+  return sleepRecords.map(sleepRecordMapper);
 };
 
 export const createUser = async (name: string, genderId?: number) => {
