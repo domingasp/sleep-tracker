@@ -8,6 +8,7 @@ import { useState } from "react";
 import { RecentSleepRecordsDrawer } from "../../features/users/components/recent-sleep-records-drawer";
 import { User } from "../../types/api";
 import { useDisclosure } from "@mantine/hooks";
+import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const usersLoader = (queryClient: QueryClient) => async () => {
@@ -20,6 +21,7 @@ export const usersLoader = (queryClient: QueryClient) => async () => {
 };
 
 export function LandingRoute() {
+  const navigate = useNavigate();
   const [clickedUser, setClickedUser] = useState<User | undefined>(undefined);
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -35,9 +37,10 @@ export function LandingRoute() {
           leftSection={<IconBedFilled />}
           variant="outline"
           color="orange"
-          data-testid="landing-route-track-sleep-button"
+          data-testid="landing-route-add-sleep-button"
+          onClick={() => navigate("/add-sleep")}
         >
-          Track Sleep
+          Add Sleep
         </Button>
       }
     >
