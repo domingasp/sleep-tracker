@@ -13,4 +13,14 @@ export type User = Entity<{
   entryCount: number;
 }>;
 
-export type SleepRecord = { date: string; hoursSlept: number };
+export type GroupedBySleepRecord = {
+  date: string;
+  hoursSlept: number;
+};
+
+export type SleepRecord = {
+  id: number;
+  date: string;
+  hoursSlept: number;
+  userId: number;
+};

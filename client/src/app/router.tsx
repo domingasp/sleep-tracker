@@ -18,6 +18,13 @@ const createAppRouter = (queryClient: QueryClient) =>
       errorElement: <MainErrorFallback />,
     },
     {
+      path: "/add-sleep",
+      lazy: async () => {
+        const { AddSleepRoute } = await import("./routes/add-sleep");
+        return { Component: AddSleepRoute };
+      },
+    },
+    {
       path: "*",
       lazy: async () => {
         const { NotFoundRoute } = await import("./routes/not-found");

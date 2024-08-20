@@ -1,6 +1,6 @@
 import { queryOptions, useQuery } from "@tanstack/react-query";
 import { api } from "../../../lib/api-client";
-import { SleepRecord } from "../../../types/api";
+import { GroupedBySleepRecord } from "../../../types/api";
 import { QueryConfig } from "../../../lib/react-query";
 
 export type GetRecentSleepRecordsDto = {
@@ -9,7 +9,7 @@ export type GetRecentSleepRecordsDto = {
 
 export const getRecentSleepRecords = ({
   userId,
-}: GetRecentSleepRecordsDto): Promise<SleepRecord[]> => {
+}: GetRecentSleepRecordsDto): Promise<GroupedBySleepRecord[]> => {
   if (userId <= 0) return Promise.resolve([]);
   return api.get(`/users/${userId}/recent-sleep-records`);
 };
